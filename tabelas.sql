@@ -97,6 +97,15 @@ CREATE TABLE Diretor (
     superintendente VARCHAR2(11) PRIMARY KEY,
     codigo NUMBER,
     data_inicio DATE
+	CONSTRAINT fk_superintendente FOREIGN KEY (superintendente) REFERENCES Superintendente(cpf_f),
+    CONSTRAINT unico_diretor UNIQUE (FuncionarioID)
+);
+
+CREATE TABLE Diretor (
+    FuncionarioID NUMBER PRIMARY KEY,
+    CONSTRAINT fk_diretor_superintendente FOREIGN KEY (FuncionarioID)
+    REFERENCES Superintendente(FuncionarioID),
+    CONSTRAINT unico_diretor UNIQUE (FuncionarioID)
 );
 
 -- Criação da tabela Guarda
@@ -104,6 +113,7 @@ CREATE TABLE Guarda (
     cpf_f VARCHAR2(11) PRIMARY KEY,
     turno VARCHAR2(30),
     supervisionado VARCHAR2(30),
+    CONSTRAINT fk_funcionario FOREIGN KEY (cpf_f) REFERENCES Funcionario(cpf),
     CONSTRAINT fk_supervisionado FOREIGN KEY (supervisionado) REFERENCES Guarda(cpf_f)
 );
 
