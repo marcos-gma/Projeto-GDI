@@ -11,16 +11,18 @@ CREATE TABLE Detento (
 -- Criação da tabela Sentença
 CREATE TABLE Sentenca (
     crime VARCHAR2(30),
-    malfeitor VARCHAR2(11),
-    PRIMARY KEY (crime, malfeitor),
-    CONSTRAINT fk_malfeitor FOREIGN KEY (malfeitor) REFERENCES Detento(cpf)
+    cpf_detento VARCHAR2(11),
+    PRIMARY KEY (crime, cpf_detento),
+    CONSTRAINT fk_malfeitor FOREIGN KEY (cpf_detento) REFERENCES Detento(cpf)
 );
 
 -- Criação da tabela Crime
 CREATE TABLE Crime (
-    crime VARCHAR2(30) PRIMARY KEY,
+	id_crime NUMBER PRIMARY KEY,
+    crime VARCHAR2(30),
+	cpf_detento VARCHAR2(11),
     duracao NUMBER,
-    CONSTRAINT fk_crime FOREIGN KEY (crime) REFERENCES Sentenca(crime),
+    CONSTRAINT fk_crime FOREIGN KEY (crime, cpf_detento) REFERENCES Sentenca(crime, cpf_detento)
 );
 
 -- Criação da tabela Visitante
@@ -33,6 +35,12 @@ CREATE TABLE Visitante (
     CONSTRAINT fk_malfeitor_visitante FOREIGN KEY (malfeitor) REFERENCES Detento(cpf)
 );
 
+-- Criação da tabela Tipo_Cela
+CREATE TABLE Tipo_Cela (
+    tipo_cela VARCHAR2(30) PRIMARY KEY,
+    capacidade NUMBER
+);
+
 -- Criação da tabela Cela
 CREATE TABLE Cela (
     id NUMBER PRIMARY KEY,
@@ -40,28 +48,12 @@ CREATE TABLE Cela (
     CONSTRAINT fk_tipo FOREIGN KEY (tipo) REFERENCES Tipo_Cela(tipo_cela)
 );
 
--- Criação da tabela Tipo_Cela
-CREATE TABLE Tipo_Cela (
-    tipo_cela VARCHAR2(30) PRIMARY KEY,
-    capacidade NUMBER
-);
-
--- Criação da tabela Ala
-CREATE TABLE Ala (
-    id NUMBER PRIMARY KEY,
-    tipo VARCHAR2(30),
-    nivel_seg NUMBER,
-    autoridade VARCHAR2(11),
-    CONSTRAINT fk_superintendente FOREIGN KEY (autoridade) REFERENCES Superintendente(cpf)
-);
-
--- Criação da tabela Superintendente
-CREATE TABLE Superintendente (
-    cpf_f VARCHAR2(11) PRIMARY KEY,
-    bonificacao NUMBER,
-    diretor NUMBER,
-    CONSTRAINT fk_funcionario FOREIGN KEY (cpf_f) REFERENCES Funcionario(cpf),
-    CONSTRAINT fk_diretor FOREIGN KEY (diretor) REFERENCES Diretor(codigo)
+-- Criação da tabela Endereço
+CREATE TABLE Endereco (
+    cep VARCHAR2(10) PRIMARY KEY,
+    rua VARCHAR2(30),
+    numero NUMBER,
+    bairro VARCHAR2(30)
 );
 
 -- Criação da tabela Funcionário
@@ -76,12 +68,30 @@ CREATE TABLE Funcionario (
     CONSTRAINT fk_endereco FOREIGN KEY (cep) REFERENCES Endereco(cep)
 );
 
--- Criação da tabela Endereço
-CREATE TABLE Endereco (
-    cep VARCHAR2(10) PRIMARY KEY,
-    rua VARCHAR2(30),
-    numero NUMBER,
-    bairro VARCHAR2(30)
+-- Criação da tabela Diretor
+CREATE TABLE Diretor (
+    cpf_f VARCHAR2(11) PRIMARY KEY,
+    codigo NUMBER,
+    data_inicio DATE,																		-- Diretor especialização de funcionario
+    CONSTRAINT unico_diretor FOREIGN KEY (cpf_f) REFERENCES Funcionario (cpf)
+);
+
+-- Criação da tabela Superintendente
+CREATE TABLE Superintendente (
+    cpf_f VARCHAR2(11) PRIMARY KEY,
+    bonificacao NUMBER,
+    diretor VARCHAR2(11),
+    CONSTRAINT fk_funcionario FOREIGN KEY (cpf_f) REFERENCES Funcionario(cpf),
+    CONSTRAINT fk_diretor FOREIGN KEY (diretor) REFERENCES Diretor(cpf_f)
+);
+
+-- Criação da tabela Ala
+CREATE TABLE Ala (
+    id NUMBER PRIMARY KEY,
+    tipo VARCHAR2(30),
+    nivel_seg NUMBER,
+    autoridade VARCHAR2(11),
+    CONSTRAINT fk_superintendente FOREIGN KEY (autoridade) REFERENCES Superintendente(cpf_f)
 );
 
 -- Criação da tabela Telefone
@@ -92,28 +102,12 @@ CREATE TABLE Telefone (
     CONSTRAINT fk_funcionario_telefone FOREIGN KEY (funcionario) REFERENCES Funcionario(cpf)
 );
 
--- Criação da tabela Diretor
-CREATE TABLE Diretor (
-    superintendente VARCHAR2(11) PRIMARY KEY,
-    codigo NUMBER,
-    data_inicio DATE
-	CONSTRAINT fk_superintendente FOREIGN KEY (superintendente) REFERENCES Superintendente(cpf_f),
-    CONSTRAINT unico_diretor UNIQUE (FuncionarioID)
-);
-
-CREATE TABLE Diretor (
-    FuncionarioID NUMBER PRIMARY KEY,
-    CONSTRAINT fk_diretor_superintendente FOREIGN KEY (FuncionarioID)
-    REFERENCES Superintendente(FuncionarioID),
-    CONSTRAINT unico_diretor UNIQUE (FuncionarioID)
-);
 
 -- Criação da tabela Guarda
 CREATE TABLE Guarda (
     cpf_f VARCHAR2(11) PRIMARY KEY,
     turno VARCHAR2(30),
-    supervisionado VARCHAR2(30),
-    CONSTRAINT fk_funcionario FOREIGN KEY (cpf_f) REFERENCES Funcionario(cpf),
+    supervisionado VARCHAR2(11),
     CONSTRAINT fk_supervisionado FOREIGN KEY (supervisionado) REFERENCES Guarda(cpf_f)
 );
 
@@ -134,12 +128,14 @@ CREATE TABLE Visita (
 CREATE TABLE Entrada (
     visitante VARCHAR2(30),
     data_hora DATE,
+	nome VARCHAR2(30), 
+	malfeitor VARCHAR2(11),
     PRIMARY KEY (visitante, data_hora),
-    CONSTRAINT fk_visitante_entrada FOREIGN KEY (visitante) REFERENCES Visitante(nome)
+    CONSTRAINT fk_visitante_entrada FOREIGN KEY (nome, malfeitor) REFERENCES Visitante(nome, malfeitor)
 );
 
 -- Criação da tabela Local
-CREATE TABLE Local (
+CREATE TABLE Lugar (
     data_hora DATE PRIMARY KEY,
     sala NUMBER,
     CONSTRAINT fk_sala FOREIGN KEY (sala) REFERENCES Sala_visita(id)
@@ -154,3 +150,7 @@ CREATE TABLE Possui (
     CONSTRAINT fk_cela FOREIGN KEY (cela) REFERENCES Cela(id),
     CONSTRAINT fk_ala FOREIGN KEY (ala) REFERENCES Ala(id)
 );
+
+CREATE SEQUENCE Sequencia_Geral
+	START WITH 1
+	INCREMENT BY 1;
