@@ -3,9 +3,10 @@ CREATE TABLE Detento (
     cpf VARCHAR2(11) PRIMARY KEY,
     comportamento VARCHAR2(30),
     data_ent DATE,
-    sexo CHAR(1),
+    sexo char(1),
     data_nasc DATE,
-    nome VARCHAR2(30)
+    nome VARCHAR2(30),
+    CHECK (sexo IN ('F', 'M'))--Adição checagem ENUM
 );
 
 -- Criação da tabela Sentença
@@ -22,7 +23,8 @@ CREATE TABLE Crime (
     crime VARCHAR2(30),
 	cpf_detento VARCHAR2(11),
     duracao NUMBER,
-    CONSTRAINT fk_crime FOREIGN KEY (crime, cpf_detento) REFERENCES Sentenca(crime, cpf_detento)
+    CONSTRAINT fk_crime FOREIGN KEY (crime, cpf_detento) REFERENCES Sentenca(crime, cpf_detento),
+    CHECK (duracao BETWEEN 1 AND 30)--Adição checagem INTERVALO
 );
 
 -- Criação da tabela Visitante
@@ -32,20 +34,23 @@ CREATE TABLE Visitante (
     data_nasc DATE,
     malfeitor VARCHAR2(11),
     PRIMARY KEY (nome, malfeitor),
-    CONSTRAINT fk_malfeitor_visitante FOREIGN KEY (malfeitor) REFERENCES Detento(cpf)
+    CONSTRAINT fk_malfeitor_visitante FOREIGN KEY (malfeitor) REFERENCES Detento(cpf),
+    CHECK (sexo IN ('F', 'M'))--Adição checagem ENUM
 );
 
 -- Criação da tabela Tipo_Cela
 CREATE TABLE Tipo_Cela (
     tipo_cela VARCHAR2(30) PRIMARY KEY,
-    capacidade NUMBER
+    capacidade NUMBER,
+    CHECK (capacidade BETWEEN 1 AND 10) --Adição checagem INTERVALO
 );
 
 -- Criação da tabela Cela
 CREATE TABLE Cela (
-    id NUMBER PRIMARY KEY,
-    tipo VARCHAR2(30),
-    CONSTRAINT fk_tipo FOREIGN KEY (tipo) REFERENCES Tipo_Cela(tipo_cela)
+    id_cela NUMBER PRIMARY KEY,
+    tipo VARCHAR2(15), --Mudança SIZEType
+    CONSTRAINT fk_tipo FOREIGN KEY (tipo) REFERENCES Tipo_Cela(tipo_cela),
+    CHECK (tipo IN ('SOLITARIA', 'REGULAR')) --Adição checagem ENUM
 );
 
 -- Criação da tabela Endereço
@@ -65,7 +70,8 @@ CREATE TABLE Funcionario (
     salario NUMBER,
     data_admi DATE,
     cep VARCHAR2(10),
-    CONSTRAINT fk_endereco FOREIGN KEY (cep) REFERENCES Endereco(cep)
+    CONSTRAINT fk_endereco FOREIGN KEY (cep) REFERENCES Endereco(cep),
+    CHECK (sexo IN ('F', 'M')) --Adição checagem ENUM
 );
 
 -- Criação da tabela Diretor
@@ -83,15 +89,19 @@ CREATE TABLE Superintendente (
     diretor VARCHAR2(11),
     CONSTRAINT fk_funcionario FOREIGN KEY (cpf_f) REFERENCES Funcionario(cpf),
     CONSTRAINT fk_diretor FOREIGN KEY (diretor) REFERENCES Diretor(cpf_f)
+    
 );
 
 -- Criação da tabela Ala
 CREATE TABLE Ala (
     id NUMBER PRIMARY KEY,
-    tipo VARCHAR2(30),
-    nivel_seg NUMBER,
+    tipo CHAR(1), --Mudança type
+    nivel_seg VARCHAR2(15), --Mudança type
     autoridade VARCHAR2(11),
-    CONSTRAINT fk_superintendente FOREIGN KEY (autoridade) REFERENCES Superintendente(cpf_f)
+    CONSTRAINT fk_superintendente FOREIGN KEY (autoridade) REFERENCES Superintendente(cpf_f),
+    CHECK (tipo IN ('F', 'M')), --Adição checagem ENUM
+    CHECK (nivel_seg IN ('MAXIMA', 'MEDIA', 'PADRAO')) --Adição checagem ENUM
+    
 );
 
 -- Criação da tabela Telefone
@@ -106,9 +116,10 @@ CREATE TABLE Telefone (
 -- Criação da tabela Guarda
 CREATE TABLE Guarda (
     cpf_f VARCHAR2(11) PRIMARY KEY,
-    turno VARCHAR2(30),
+    turno VARCHAR2(11),
     supervisionado VARCHAR2(11),
-    CONSTRAINT fk_supervisionado FOREIGN KEY (supervisionado) REFERENCES Guarda(cpf_f)
+    CONSTRAINT fk_supervisionado FOREIGN KEY (supervisionado) REFERENCES Guarda(cpf_f),
+    CHECK (turno IN ('NOTURNO', 'MATUTINO', 'VESPERTINO')) --Adição checagem ENUM
 );
 
 -- Criação da tabela Sala_visita
@@ -138,7 +149,8 @@ CREATE TABLE Entrada (
 CREATE TABLE Lugar (
     data_hora DATE PRIMARY KEY,
     sala NUMBER,
-    CONSTRAINT fk_sala FOREIGN KEY (sala) REFERENCES Sala_visita(id)
+    CONSTRAINT fk_sala FOREIGN KEY (sala) REFERENCES Sala_visita(id),
+    CHECK (sala BETWEEN 100 AND 208) --Adição checagem INTERVALO
 );
 
 -- Criação da tabela Possui
@@ -152,5 +164,5 @@ CREATE TABLE Possui (
 );
 
 CREATE SEQUENCE Sequencia_Geral
-	START WITH 1
-	INCREMENT BY 1;
+START WITH 1
+INCREMENT BY 1;
