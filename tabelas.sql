@@ -132,7 +132,8 @@ CREATE TABLE Visita (
     motivo VARCHAR2(30),
     malfeitor VARCHAR2(11) PRIMARY KEY,
     data_hora DATE,
-    CONSTRAINT fk_malfeitor_visita FOREIGN KEY (malfeitor) REFERENCES Detento(cpf)
+    CONSTRAINT fk_malfeitor_visita FOREIGN KEY (malfeitor) REFERENCES Detento(cpf),
+    CHECK (motivo IN ('Amigo(a)', 'Parente', 'Conjuge', 'Companheiro(a)')) --Adição checagem ENUM
 );
 
 -- Criação da tabela Entrada
