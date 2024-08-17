@@ -2,6 +2,10 @@ CREATE SEQUENCE Sequencia_Geral
 START WITH 1
 INCREMENT BY 1;
 
+CREATE SEQUENCE Sequencia_Sala
+START WITH 100
+INCREMENT BY 1;
+
 /*
 1. INDEPENDENTES
 	Endereco - Não depende de nenhuma outra tabela.
@@ -55,16 +59,16 @@ INSERT INTO Tipo_Cela (tipo_cela, capacidade) VALUES ('REGULAR', 4);
 INSERT INTO Tipo_Cela (tipo_cela, capacidade) VALUES ('SOLITARIA', 1);
 
 -- Inserindo dados na tabela Sala_visita
-INSERT INTO Sala_visita (id) VALUES (Sequencia_Geral.NEXTVAL);
-INSERT INTO Sala_visita (id) VALUES (Sequencia_Geral.NEXTVAL);
-INSERT INTO Sala_visita (id) VALUES (Sequencia_Geral.NEXTVAL);
-INSERT INTO Sala_visita (id) VALUES (Sequencia_Geral.NEXTVAL);
-INSERT INTO Sala_visita (id) VALUES (Sequencia_Geral.NEXTVAL);
-INSERT INTO Sala_visita (id) VALUES (Sequencia_Geral.NEXTVAL);
-INSERT INTO Sala_visita (id) VALUES (Sequencia_Geral.NEXTVAL);
-INSERT INTO Sala_visita (id) VALUES (Sequencia_Geral.NEXTVAL);
-INSERT INTO Sala_visita (id) VALUES (Sequencia_Geral.NEXTVAL);
-INSERT INTO Sala_visita (id) VALUES (Sequencia_Geral.NEXTVAL);
+INSERT INTO Sala_visita (id) VALUES (Sequencia_Sala.NEXTVAL);
+INSERT INTO Sala_visita (id) VALUES (Sequencia_Sala.NEXTVAL);
+INSERT INTO Sala_visita (id) VALUES (Sequencia_Sala.NEXTVAL);
+INSERT INTO Sala_visita (id) VALUES (Sequencia_Sala.NEXTVAL);
+INSERT INTO Sala_visita (id) VALUES (Sequencia_Sala.NEXTVAL);
+INSERT INTO Sala_visita (id) VALUES (Sequencia_Sala.NEXTVAL);
+INSERT INTO Sala_visita (id) VALUES (Sequencia_Sala.NEXTVAL);
+INSERT INTO Sala_visita (id) VALUES (Sequencia_Sala.NEXTVAL);
+INSERT INTO Sala_visita (id) VALUES (Sequencia_Sala.NEXTVAL);
+INSERT INTO Sala_visita (id) VALUES (Sequencia_Sala.NEXTVAL);
 
 
 
@@ -96,38 +100,137 @@ INSERT INTO Funcionario (cpf, nome, data_nasc, sexo, salario, data_admi, cep) VA
 
 
 -- Inserindo dados na tabela Diretor
-INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('11111111111', Sequencia_Geral.NEXTVAL, TO_DATE('2020-01-10', 'YYYY-MM-DD'));
+INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('12345678901', 1, TO_DATE('2020-01-10', 'YYYY-MM-DD'));--João Gomes
+INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('45678901234', 2, TO_DATE('2019-02-01', 'YYYY-MM-DD'));--Gisele
 
 -- Inserindo dados na tabela Superintendente
-INSERT INTO Superintendente (cpf_f, bonificacao, diretor) VALUES ('22222222222', 500, '11111111111');
+INSERT INTO Superintendente (cpf_f, bonificacao, diretor) VALUES ('45678901234', 500, 2);--Gisele
+INSERT INTO Superintendente (cpf_f, bonificacao, diretor) VALUES ('12345678901', 500, 1);--João Gomes
+
 
 -- Inserindo dados na tabela Ala
-INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'M', 'MAXIMA', '22222222222');
+INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'M', 'MAXIMA', '45678901234');
+INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'M', 'MEDIA', '45678901234');
+INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'M', 'PADRAO', '45678901234')
+
+INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'F', 'MEDIA', '12345678901');;
+INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'F', 'MAXIMA', '12345678901');;
+INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'F', 'PADRAO', '12345678901');;
 
 -- Inserindo dados na tabela Telefone
-INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '11987654321', '11111111111');
-INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '11976543210', '22222222222');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '11987654321', '12222222222');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '11987654322', '12222222222');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '21987654323', '02222222220');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '21987654324', '02222222220');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '31987654325', '12345678901');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '31987654326', '12345678901');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '41987654327', '23456789012');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '41987654328', '23456789012');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '51987654329', '34567890123');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '51987654330', '34567890123');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '61987654331', '45678901234');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '61987654332', '45678901234');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '71987654333', '56789012345');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '71987654334', '56789012345');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '81987654335', '67890123456');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '81987654336', '67890123456');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '91987654337', '78901234567');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '91987654338', '78901234567');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '10198765439', '89012345678');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '10198765440', '89012345678');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '11998765441', '90123456789');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '11999765442', '90123456789');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '12198765443', '01234567890');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '12198765444', '01234567890');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '13198765445', '10987654321');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '13198765446', '10987654321');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '14198765447', '21987654321');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '14198765448', '21987654321');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '15198765449', '32987654321');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '15198765450', '32987654321');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '16198765451', '43987654321');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '16198765452', '43987654321');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '17198765453', '54987654321');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '17198765454', '54987654321');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '18198765455', '65987654321');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '18198765456', '65987654321');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '19198765457', '76987654321');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '19198765458', '76987654321');
+
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '20198765459', '87987654321');
+INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '20198765460', '87987654321');
+
+-- Inserindo dados na tabela Detento
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('98876543210', 'Bom', TO_DATE('2023-01-10', 'YYYY-MM-DD'), 'M', TO_DATE('1990-02-15', 'YYYY-MM-DD'), 'Carlos Eduardo');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('97765432109', 'Moderado', TO_DATE('2022-03-20', 'YYYY-MM-DD'), 'F', TO_DATE('1985-06-25', 'YYYY-MM-DD'), 'Mariana Costa');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('96654321098', 'Ruim', TO_DATE('2021-05-05', 'YYYY-MM-DD'), 'M', TO_DATE('1992-11-13', 'YYYY-MM-DD'), 'Pedro Santos');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('95543210987', 'Bom', TO_DATE('2020-07-12', 'YYYY-MM-DD'), 'F', TO_DATE('1988-09-22', 'YYYY-MM-DD'), 'Ana Paula');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('94432109876', 'Moderado', TO_DATE('2019-09-28', 'YYYY-MM-DD'), 'M', TO_DATE('1980-04-01', 'YYYY-MM-DD'), 'José Carlos');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('93321098765', 'Ruim', TO_DATE('2018-11-15', 'YYYY-MM-DD'), 'F', TO_DATE('1991-02-07', 'YYYY-MM-DD'), 'Fernanda Oliveira');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('92210987654', 'Bom', TO_DATE('2017-01-03', 'YYYY-MM-DD'), 'M', TO_DATE('1993-05-19', 'YYYY-MM-DD'), 'Lucas Pereira');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('91109876543', 'Moderado', TO_DATE('2016-02-20', 'YYYY-MM-DD'), 'F', TO_DATE('1989-07-04', 'YYYY-MM-DD'), 'Juliana Lima');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('90098765432', 'Ruim', TO_DATE('2015-04-14', 'YYYY-MM-DD'), 'M', TO_DATE('1987-12-25', 'YYYY-MM-DD'), 'Anderson Silva');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('89987654321', 'Bom', TO_DATE('2014-06-06', 'YYYY-MM-DD'), 'F', TO_DATE('1994-10-10', 'YYYY-MM-DD'), 'Bianca Torres');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('88876543210', 'Moderado', TO_DATE('2013-08-25', 'YYYY-MM-DD'), 'M', TO_DATE('1995-01-15', 'YYYY-MM-DD'), 'Rafael Almeida');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('87765432109', 'Ruim', TO_DATE('2012-10-31', 'YYYY-MM-DD'), 'F', TO_DATE('1990-03-30', 'YYYY-MM-DD'), 'Camila Rocha');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('86654321098', 'Bom', TO_DATE('2011-12-22', 'YYYY-MM-DD'), 'M', TO_DATE('1996-07-25', 'YYYY-MM-DD'), 'Felipe Souza');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('85543210987', 'Moderado', TO_DATE('2010-02-15', 'YYYY-MM-DD'), 'F', TO_DATE('1993-11-02', 'YYYY-MM-DD'), 'Leticia Azevedo');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('84432109876', 'Ruim', TO_DATE('2009-03-27', 'YYYY-MM-DD'), 'M', TO_DATE('1981-08-17', 'YYYY-MM-DD'), 'Gabriel Mendes');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('83321098765', 'Bom', TO_DATE('2008-05-30', 'YYYY-MM-DD'), 'F', TO_DATE('1992-09-09', 'YYYY-MM-DD'), 'Vanessa Ribeiro');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('82210987654', 'Moderado', TO_DATE('2007-07-11', 'YYYY-MM-DD'), 'M', TO_DATE('1997-02-21', 'YYYY-MM-DD'), 'Thiago Oliveira');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('81109876543', 'Ruim', TO_DATE('2006-09-18', 'YYYY-MM-DD'), 'F', TO_DATE('1986-10-16', 'YYYY-MM-DD'), 'Isabela Fernandes');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('80098765432', 'Bom', TO_DATE('2005-11-03', 'YYYY-MM-DD'), 'M', TO_DATE('1982-01-30', 'YYYY-MM-DD'), 'Ricardo Duarte');
+INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('79987654321', 'Moderado', TO_DATE('2004-01-21', 'YYYY-MM-DD'), 'F', TO_DATE('1989-04-12', 'YYYY-MM-DD'), 'Patricia Lima');
 
 -- Inserindo dados na tabela Guarda
-INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('33333333333', 'NOTURNO', '22222222222');
-INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('44444444444', 'MATUTINO', '11111111111');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('12222222222', 'MATUTINO', '98876543210');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('23456789012', 'NOTURNO', '79987654321');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('34567890123', 'VESPERTINO', '80098765432');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('56789012345', 'NOTURNO', '81109876543');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('67890123456', 'VESPERTINO', '82210987654');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('78901234567', 'MATUTINO', '83321098765');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('89012345678', 'NOTURNO', '84432109876');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('90123456789', 'VESPERTINO', '85543210987');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('01234567890', 'MATUTINO', '86654321098');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('10987654321', 'NOTURNO', '87765432109');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('21987654321', 'VESPERTINO', '88876543210');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('32987654321', 'MATUTINO', '89987654321');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('43987654321', 'NOTURNO', '90098765432');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('54987654321', 'VESPERTINO', '91109876543');
+INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('65987654321', 'MATUTINO', '92210987654');
 
 
 -- Inserindo dados na tabela Detento
-INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('55555555555', 'Bom', TO_DATE('2022-03-15', 'YYYY-MM-DD'), 'M', TO_DATE('1995-04-12', 'YYYY-MM-DD'), 'Carlos Alberto');
-INSERT INTO Detento (cpf, comportamento, data_ent, sexo, data_nasc, nome) VALUES ('66666666666', 'Ruim', TO_DATE('2023-01-20', 'YYYY-MM-DD'), 'F', TO_DATE('1988-07-25', 'YYYY-MM-DD'), 'Ana Maria');
 
 -- Inserindo dados na tabela Sentenca
-INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Roubo', '55555555555');
-INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Assalto', '66666666666');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Roubo', '98876543210');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Assalto', '79987654321');
 
 -- Inserindo dados na tabela Crime
-INSERT INTO Crime (id_crime, crime, cpf_detento, duracao) VALUES (Sequencia_Geral.NEXTVAL, 'Roubo', '55555555555', 5);
-INSERT INTO Crime (id_crime, crime, cpf_detento, duracao) VALUES (Sequencia_Geral.NEXTVAL, 'Assalto', '66666666666', 10);
+INSERT INTO Crime (id_crime, crime, cpf_detento, duracao) VALUES (Sequencia_Geral.NEXTVAL, 'Roubo', '98876543210', 5);
+INSERT INTO Crime (id_crime, crime, cpf_detento, duracao) VALUES (Sequencia_Geral.NEXTVAL, 'Assalto', '79987654321', 10);
 
 -- Inserindo dados na tabela Visitante
-INSERT INTO Visitante (nome, sexo, data_nasc, malfeitor) VALUES ('Juliana Souza', 'F', TO_DATE('1990-05-10', 'YYYY-MM-DD'), '55555555555');
-INSERT INTO Visitante (nome, sexo, data_nasc, malfeitor) VALUES ('Pedro Lima', 'M', TO_DATE('1985-11-25', 'YYYY-MM-DD'), '66666666666');
+INSERT INTO Visitante (nome, sexo, data_nasc, malfeitor) VALUES ('Fiona Rocha', 'F', TO_DATE('1990-05-10', 'YYYY-MM-DD'), '87765432109');
+INSERT INTO Visitante (nome, sexo, data_nasc, malfeitor) VALUES ('Vicente Pereira', 'M', TO_DATE('1985-11-25', 'YYYY-MM-DD'), '92210987654');
 
 
 
@@ -143,17 +246,17 @@ INSERT INTO Cela (id_cela, tipo) VALUES (Sequencia_Geral.NEXTVAL, 'REGULAR');
 
 
 -- Inserindo dados na tabela Visita
-INSERT INTO Visita (motivo, malfeitor, data_hora) VALUES ('Família', '55555555555', TO_DATE('2024-08-10 14:00:00', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO Visita (motivo, malfeitor, data_hora) VALUES ('Amigos', '66666666666', TO_DATE('2024-08-11 15:30:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO Visita (motivo, malfeitor, data_hora) VALUES ('Parente', '87765432109', TO_DATE('2024-08-10 14:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO Visita (motivo, malfeitor, data_hora) VALUES ('Conjuge', '92210987654', TO_DATE('2024-08-11 15:30:00', 'YYYY-MM-DD HH24:MI:SS'));
 
 -- Inserindo dados na tabela Entrada
-INSERT INTO Entrada (visitante, data_hora, nome, malfeitor) VALUES ('Juliana Souza', TO_DATE('2024-08-10 13:50:00', 'YYYY-MM-DD HH24:MI:SS'), 'Juliana Souza', '55555555555');
-INSERT INTO Entrada (visitante, data_hora, nome, malfeitor) VALUES ('Pedro Lima', TO_DATE('2024-08-11 15:20:00', 'YYYY-MM-DD HH24:MI:SS'), 'Pedro Lima', '66666666666');
+INSERT INTO Entrada (visitante, data_hora, nome, malfeitor) VALUES ('Fiona Rocha', TO_DATE('2024-08-10 13:50:00', 'YYYY-MM-DD HH24:MI:SS') '87765432109');
+INSERT INTO Entrada (visitante, data_hora, nome, malfeitor) VALUES ('Vicente Pereira', TO_DATE('2024-08-11 15:20:00', 'YYYY-MM-DD HH24:MI:SS'), '92210987654');
 
 -- Inserindo dados na tabela Lugar
 INSERT INTO Lugar (data_hora, sala) VALUES (TO_DATE('2024-08-10 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), 101);
 INSERT INTO Lugar (data_hora, sala) VALUES (TO_DATE('2024-08-11 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 102);
 
 -- Inserindo dados na tabela Possui
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('55555555555', 1, 1);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('66666666666', 2, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('87765432109', 1, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('92210987654', 2, 1);
