@@ -137,11 +137,10 @@ CREATE TABLE Visita (
 );
 
 -- Criação da tabela Entrada
-CREATE TABLE Entrada (
+CREATE TABLE Entrada ( --Atualização retirar atributo nome.
     visitante VARCHAR2(30),
     data_hora DATE,
-	nome VARCHAR2(30), 
-	malfeitor VARCHAR2(11),
+    malfeitor VARCHAR2(11),
     PRIMARY KEY (visitante, data_hora),
     CONSTRAINT fk_visitante_entrada FOREIGN KEY (nome, malfeitor) REFERENCES Visitante(nome, malfeitor)
 );
