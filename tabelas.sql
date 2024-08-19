@@ -138,7 +138,7 @@ CREATE TABLE Visita (
 
 -- Criação da tabela Entrada
 CREATE TABLE Entrada ( --Atualização retirar atributo nome.
-    visitante VARCHAR2(30),
+    visitante VARCHAR2(30) PRIMARY KEY,
     data_hora DATE,
     malfeitor VARCHAR2(11),
     PRIMARY KEY (visitante, data_hora),
