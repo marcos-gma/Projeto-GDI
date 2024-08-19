@@ -1,6 +1,9 @@
+CREATE SEQUENCE Sequencia_Geral
+START WITH 1
+INCREMENT BY 1;
 
 CREATE SEQUENCE Sequencia_Sala
-START WITH 100
+START WITH 101
 INCREMENT BY 1;
 
 /*
@@ -93,20 +96,15 @@ INSERT INTO Funcionario (cpf, nome, data_nasc, sexo, salario, data_admi, cep) VA
 INSERT INTO Funcionario (cpf, nome, data_nasc, sexo, salario, data_admi, cep) VALUES ('76987654321', 'Neymar Queiroz', TO_DATE('1980-08-22', 'YYYY-MM-DD'), 'M', 1500, TO_DATE('2022-01-10', 'YYYY-MM-DD'), '78965410');
 INSERT INTO Funcionario (cpf, nome, data_nasc, sexo, salario, data_admi, cep) VALUES ('87987654321', 'Jessica Feitosa', TO_DATE('1978-06-19', 'YYYY-MM-DD'), 'F', 3000, TO_DATE('1999-08-01', 'YYYY-MM-DD'), '91247819');
 
-
-
-
 -- Inserindo dados na tabela Diretor
-INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('12345678901', 1, TO_DATE('2020-01-10', 'YYYY-MM-DD'));--João Gomes
-INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('45678901234', 2, TO_DATE('2019-02-01', 'YYYY-MM-DD'));--Gisele
+INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('12345678901', 1, TO_DATE('2020-01-10', 'YYYY-MM-DD'));
+INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('45678901234', 2, TO_DATE('2019-02-01', 'YYYY-MM-DD'));
 INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('56789012345', 3, TO_DATE('2015-06-05', 'YYYY-MM-DD'));
 INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('67890123456', 4, TO_DATE('2016-07-10', 'YYYY-MM-DD'));
 
-
 -- Inserindo dados na tabela Superintendente
-INSERT INTO Superintendente (cpf_f, bonificacao, diretor) VALUES ('45678901234', 500, 2);--Gisele
-INSERT INTO Superintendente (cpf_f, bonificacao, diretor) VALUES ('12345678901', 500, 1);--João Gomes
-
+INSERT INTO Superintendente (cpf_f, bonificacao, diretor) VALUES ('45678901234', 500, 2);
+INSERT INTO Superintendente (cpf_f, bonificacao, diretor) VALUES ('12345678901', 500, 1);
 
 -- Inserindo dados na tabela Ala
 INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'M', 'MAXIMA', '45678901234');
@@ -223,10 +221,8 @@ INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('65987654321', 'MATUTI
 -- Inserindo dados na tabela Sentenca
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Roubo', '98876543210');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Assalto', '79987654321');
-INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Roubo', '98876543210');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Lavagem de Dinheiro', '97765432109');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Homícidio', '96654321098');
-INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Furto', '9665432109');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Assalto', '94432109876');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Tentativa de homicídio', '93321098765');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Latrocinio', '92210987654');
@@ -260,13 +256,13 @@ INSERT INTO Visita (motivo, malfeitor, data_hora) VALUES ('Parente', '8776543210
 INSERT INTO Visita (motivo, malfeitor, data_hora) VALUES ('Conjuge', '92210987654', TO_DATE('2024-08-11 15:30:00', 'YYYY-MM-DD HH24:MI:SS'));
 
 -- Inserindo dados na tabela Entrada
-INSERT INTO Entrada (visitante, data_hora, nome, malfeitor) VALUES ('Fiona Rocha', TO_DATE('2024-08-10 13:50:00', 'YYYY-MM-DD HH24:MI:SS') '87765432109');
-INSERT INTO Entrada (visitante, data_hora, nome, malfeitor) VALUES ('Vicente Pereira', TO_DATE('2024-08-11 15:20:00', 'YYYY-MM-DD HH24:MI:SS'), '92210987654');
+INSERT INTO Entrada (visitante, data_hora, malfeitor) VALUES ('Fiona Rocha', TO_DATE('2024-08-10 13:50:00', 'YYYY-MM-DD HH24:MI:SS'), '87765432109');
+INSERT INTO Entrada (visitante, data_hora, malfeitor) VALUES ('Vicente Pereira', TO_DATE('2024-08-11 15:20:00', 'YYYY-MM-DD HH24:MI:SS'), '92210987654');
 
 -- Inserindo dados na tabela Lugar
 INSERT INTO Lugar (data_hora, sala) VALUES (TO_DATE('2024-08-10 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), 101);
 INSERT INTO Lugar (data_hora, sala) VALUES (TO_DATE('2024-08-11 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 102);
 
 -- Inserindo dados na tabela Possui
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('87765432109', 1, 1);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('92210987654', 2, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('87765432109', 49, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('92210987654', 50, 1);
