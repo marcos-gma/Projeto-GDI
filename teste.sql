@@ -18,7 +18,8 @@ DROP TABLE Crime CASCADE CONSTRAINTS;
 DROP TABLE Sentenca CASCADE CONSTRAINTS;
 DROP TABLE Detento CASCADE CONSTRAINTS;
 DROP SEQUENCE Sequencia_Geral;
-
+DROP SEQUENCE Sequencia_Sala;
+    
 -- Criação da tabela Detento
 CREATE TABLE Detento (
     cpf VARCHAR2(11) PRIMARY KEY,
@@ -97,20 +98,19 @@ CREATE TABLE Funcionario (
 
 -- Criação da tabela Diretor
 CREATE TABLE Diretor (
-    cpf_f VARCHAR2(11) PRIMARY KEY,
-    codigo NUMBER,
-    data_inicio DATE,																		-- Diretor especialização de funcionario
+    cpf_f VARCHAR2(11),
+    codigo NUMBER PRIMARY KEY,
+    data_inicio DATE,	-- Diretor especialização de funcionario
     CONSTRAINT unico_diretor FOREIGN KEY (cpf_f) REFERENCES Funcionario (cpf)
 );
 
 -- Criação da tabela Superintendente
 CREATE TABLE Superintendente (
-    cpf_f VARCHAR2(11) PRIMARY KEY,
+    cpf_f VARCHAR2(11)  PRIMARY KEY,
     bonificacao NUMBER,
-    diretor VARCHAR2(11),
+    diretor NUMBER,
     CONSTRAINT fk_funcionario FOREIGN KEY (cpf_f) REFERENCES Funcionario(cpf),
     CONSTRAINT fk_diretor FOREIGN KEY (diretor) REFERENCES Diretor(codigo)
-    
 );
 
 -- Criação da tabela Ala
@@ -122,7 +122,6 @@ CREATE TABLE Ala (
     CONSTRAINT fk_superintendente FOREIGN KEY (autoridade) REFERENCES Superintendente(cpf_f),
     CHECK (tipo IN ('F', 'M')), --Adição checagem ENUM
     CHECK (nivel_seg IN ('MAXIMA', 'MEDIA', 'PADRAO')) --Adição checagem ENUM
-    
 );
 
 -- Criação da tabela Telefone
@@ -139,9 +138,10 @@ CREATE TABLE Guarda (
     cpf_f VARCHAR2(11) PRIMARY KEY,
     turno VARCHAR2(11),
     supervisionado VARCHAR2(11),
-    CONSTRAINT fk_supervisionado FOREIGN KEY (supervisionado) REFERENCES Guarda(cpf_f),
+    CONSTRAINT fk_supervisionado FOREIGN KEY (supervisionado) REFERENCES Detento(cpf),
     CHECK (turno IN ('NOTURNO', 'MATUTINO', 'VESPERTINO')) --Adição checagem ENUM
 );
+
 
 -- Criação da tabela Sala_visita
 CREATE TABLE Sala_visita (
@@ -188,9 +188,9 @@ CREATE SEQUENCE Sequencia_Geral
 START WITH 1
 INCREMENT BY 1;
 
--- CREATE SEQUENCE Sequencia_Sala
--- START WITH 100
--- INCREMENT BY 1;
+CREATE SEQUENCE Sequencia_Sala
+START WITH 101
+INCREMENT BY 1;
 
 -- -- Limpar todas as tabelas
 -- DELETE FROM Visita;
@@ -430,10 +430,8 @@ INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('65987654321', 'MATUTI
 -- Inserindo dados na tabela Sentenca
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Roubo', '98876543210');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Assalto', '79987654321');
-INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Roubo', '98876543210');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Lavagem de Dinheiro', '97765432109');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Homícidio', '96654321098');
-INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Furto', '9665432109');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Assalto', '94432109876');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Tentativa de homicídio', '93321098765');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Latrocinio', '92210987654');
@@ -467,13 +465,14 @@ INSERT INTO Visita (motivo, malfeitor, data_hora) VALUES ('Parente', '8776543210
 INSERT INTO Visita (motivo, malfeitor, data_hora) VALUES ('Conjuge', '92210987654', TO_DATE('2024-08-11 15:30:00', 'YYYY-MM-DD HH24:MI:SS'));
 
 -- Inserindo dados na tabela Entrada
-INSERT INTO Entrada (visitante, data_hora, nome, malfeitor) VALUES ('Fiona Rocha', TO_DATE('2024-08-10 13:50:00', 'YYYY-MM-DD HH24:MI:SS') '87765432109');
-INSERT INTO Entrada (visitante, data_hora, nome, malfeitor) VALUES ('Vicente Pereira', TO_DATE('2024-08-11 15:20:00', 'YYYY-MM-DD HH24:MI:SS'), '92210987654');
+INSERT INTO Entrada (visitante, data_hora, malfeitor) VALUES ('Fiona Rocha', TO_DATE('2024-08-10 13:50:00', 'YYYY-MM-DD HH24:MI:SS'), '87765432109');
+INSERT INTO Entrada (visitante, data_hora, malfeitor) VALUES ('Vicente Pereira', TO_DATE('2024-08-11 15:20:00', 'YYYY-MM-DD HH24:MI:SS'), '92210987654');
 
 -- Inserindo dados na tabela Lugar
 INSERT INTO Lugar (data_hora, sala) VALUES (TO_DATE('2024-08-10 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), 101);
 INSERT INTO Lugar (data_hora, sala) VALUES (TO_DATE('2024-08-11 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 102);
 
 -- Inserindo dados na tabela Possui
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('87765432109', 1, 1);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('92210987654', 2, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('87765432109', 49, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('92210987654', 50, 1);
+
