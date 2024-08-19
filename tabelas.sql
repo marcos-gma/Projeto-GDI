@@ -138,11 +138,11 @@ CREATE TABLE Visita (
 
 -- Criação da tabela Entrada
 CREATE TABLE Entrada ( --Atualização retirar atributo nome.
-    visitante VARCHAR2(30) PRIMARY KEY,
+    visitante VARCHAR2(30),
     data_hora DATE,
     malfeitor VARCHAR2(11),
     PRIMARY KEY (visitante, data_hora),
-    CONSTRAINT fk_visitante_entrada FOREIGN KEY (nome, malfeitor) REFERENCES Visitante(nome, malfeitor)
+    CONSTRAINT fk_visitante_entrada FOREIGN KEY (visitante, malfeitor) REFERENCES Visitante(nome, malfeitor)
 );
 
 -- Criação da tabela Local
@@ -159,7 +159,7 @@ CREATE TABLE Possui (
     cela NUMBER,
     ala NUMBER,
     CONSTRAINT fk_malfeitor_possui FOREIGN KEY (malfeitor) REFERENCES Detento(cpf),
-    CONSTRAINT fk_cela FOREIGN KEY (cela) REFERENCES Cela(id),
+    CONSTRAINT fk_cela FOREIGN KEY (cela) REFERENCES Cela(id_cela),
     CONSTRAINT fk_ala FOREIGN KEY (ala) REFERENCES Ala(id)
 );
 
