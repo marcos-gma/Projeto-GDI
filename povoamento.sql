@@ -223,6 +223,16 @@ INSERT INTO Guarda (cpf_f, turno, supervisionado) VALUES ('65987654321', 'MATUTI
 -- Inserindo dados na tabela Sentenca
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Roubo', '98876543210');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Assalto', '79987654321');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Roubo', '98876543210');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Lavagem de Dinheiro', '97765432109');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Homícidio', '96654321098');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Furto', '9665432109');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Assalto', '94432109876');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Tentativa de homicídio', '93321098765');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Estupro', '92210987654');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Roubo', '91109876543');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Tráfico', '90098765432');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Furto', '89987654321');
 
 -- Inserindo dados na tabela Crime
 INSERT INTO Crime (id_crime, crime, cpf_detento, duracao) VALUES (Sequencia_Geral.NEXTVAL, 'Roubo', '98876543210', 5);
