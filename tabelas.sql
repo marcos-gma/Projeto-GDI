@@ -76,20 +76,19 @@ CREATE TABLE Funcionario (
 
 -- Criação da tabela Diretor
 CREATE TABLE Diretor (
-    cpf_f VARCHAR2(11) PRIMARY KEY,
-    codigo NUMBER,
-    data_inicio DATE,																		-- Diretor especialização de funcionario
+    cpf_f VARCHAR2(11),
+    codigo NUMBER PRIMARY KEY,
+    data_inicio DATE,	-- Diretor especialização de funcionario
     CONSTRAINT unico_diretor FOREIGN KEY (cpf_f) REFERENCES Funcionario (cpf)
 );
 
 -- Criação da tabela Superintendente
 CREATE TABLE Superintendente (
-    cpf_f VARCHAR2(11) PRIMARY KEY,
+    cpf_f VARCHAR2(11)  PRIMARY KEY,
     bonificacao NUMBER,
-    diretor VARCHAR2(11),
+    diretor NUMBER,
     CONSTRAINT fk_funcionario FOREIGN KEY (cpf_f) REFERENCES Funcionario(cpf),
-    CONSTRAINT fk_diretor FOREIGN KEY (diretor) REFERENCES Diretor(cpf_f)
-    
+    CONSTRAINT fk_diretor FOREIGN KEY (diretor) REFERENCES Diretor(codigo)
 );
 
 -- Criação da tabela Ala
@@ -101,7 +100,6 @@ CREATE TABLE Ala (
     CONSTRAINT fk_superintendente FOREIGN KEY (autoridade) REFERENCES Superintendente(cpf_f),
     CHECK (tipo IN ('F', 'M')), --Adição checagem ENUM
     CHECK (nivel_seg IN ('MAXIMA', 'MEDIA', 'PADRAO')) --Adição checagem ENUM
-    
 );
 
 -- Criação da tabela Telefone
@@ -118,9 +116,10 @@ CREATE TABLE Guarda (
     cpf_f VARCHAR2(11) PRIMARY KEY,
     turno VARCHAR2(11),
     supervisionado VARCHAR2(11),
-    CONSTRAINT fk_supervisionado FOREIGN KEY (supervisionado) REFERENCES Guarda(cpf_f),
+    CONSTRAINT fk_supervisionado FOREIGN KEY (supervisionado) REFERENCES Detento(cpf),
     CHECK (turno IN ('NOTURNO', 'MATUTINO', 'VESPERTINO')) --Adição checagem ENUM
 );
+
 
 -- Criação da tabela Sala_visita
 CREATE TABLE Sala_visita (
@@ -162,7 +161,3 @@ CREATE TABLE Possui (
     CONSTRAINT fk_cela FOREIGN KEY (cela) REFERENCES Cela(id_cela),
     CONSTRAINT fk_ala FOREIGN KEY (ala) REFERENCES Ala(id)
 );
-
-CREATE SEQUENCE Sequencia_Geral
-START WITH 1
-INCREMENT BY 1;
