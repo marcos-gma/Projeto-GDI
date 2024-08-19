@@ -1,6 +1,3 @@
-CREATE SEQUENCE Sequencia_Geral
-START WITH 1
-INCREMENT BY 1;
 
 CREATE SEQUENCE Sequencia_Sala
 START WITH 100
@@ -114,11 +111,11 @@ INSERT INTO Superintendente (cpf_f, bonificacao, diretor) VALUES ('12345678901',
 -- Inserindo dados na tabela Ala
 INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'M', 'MAXIMA', '45678901234');
 INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'M', 'MEDIA', '45678901234');
-INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'M', 'PADRAO', '45678901234')
+INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'M', 'PADRAO', '45678901234');
 
-INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'F', 'MEDIA', '12345678901');;
-INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'F', 'MAXIMA', '12345678901');;
-INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'F', 'PADRAO', '12345678901');;
+INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'F', 'MEDIA', '12345678901');
+INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'F', 'MAXIMA', '12345678901');
+INSERT INTO Ala (id, tipo, nivel_seg, autoridade) VALUES (Sequencia_Geral.NEXTVAL, 'F', 'PADRAO', '12345678901');
 
 -- Inserindo dados na tabela Telefone
 INSERT INTO Telefone (id, telefone, funcionario) VALUES (Sequencia_Geral.NEXTVAL, '11987654321', '12222222222');
