@@ -102,6 +102,9 @@ INSERT INTO Funcionario (cpf, nome, data_nasc, sexo, salario, data_admi, cep) VA
 -- Inserindo dados na tabela Diretor
 INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('12345678901', 1, TO_DATE('2020-01-10', 'YYYY-MM-DD'));--João Gomes
 INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('45678901234', 2, TO_DATE('2019-02-01', 'YYYY-MM-DD'));--Gisele
+INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('56789012345', 3, TO_DATE('2015-06-05', 'YYYY-MM-DD'));
+INSERT INTO Diretor (cpf_f, codigo, data_inicio) VALUES ('67890123456', 4, TO_DATE('2016-07-10', 'YYYY-MM-DD'));
+
 
 -- Inserindo dados na tabela Superintendente
 INSERT INTO Superintendente (cpf_f, bonificacao, diretor) VALUES ('45678901234', 500, 2);--Gisele
@@ -229,7 +232,7 @@ INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Homícidio', '96654321098');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Furto', '9665432109');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Assalto', '94432109876');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Tentativa de homicídio', '93321098765');
-INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Estupro', '92210987654');
+INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Latrocinio', '92210987654');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Roubo', '91109876543');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Tráfico', '90098765432');
 INSERT INTO Sentenca (crime, cpf_detento) VALUES ('Furto', '89987654321');
