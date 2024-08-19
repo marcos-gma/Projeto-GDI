@@ -192,29 +192,6 @@ CREATE SEQUENCE Sequencia_Sala
 START WITH 101
 INCREMENT BY 1;
 
--- -- Limpar todas as tabelas
--- DELETE FROM Visita;
--- DELETE FROM Entrada;
--- DELETE FROM Guarda;
--- DELETE FROM Sala_visita;
--- DELETE FROM Funcionario;
--- DELETE FROM Diretor;
--- DELETE FROM Superintendente;
--- DELETE FROM Detento;
--- DELETE FROM Sentenca;
--- DELETE FROM Crime;
--- DELETE FROM Visitante;
--- DELETE FROM Tipo_Cela;
--- DELETE FROM Cela;
--- DELETE FROM Endereco;
--- DELETE FROM Ala;
--- DELETE FROM Telefone;
--- DELETE FROM Lugar;
--- DELETE FROM Possui;
-
-
-
-
 /*
 1. INDEPENDENTES
 	Endereco - Não depende de nenhuma outra tabela.
