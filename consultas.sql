@@ -175,3 +175,44 @@ EXCEPTION
       dbms_output.put_line('Erro: ' || SQLERRM);
 END;
 
+--FUNCTION
+CREATE OR REPLACE FUNCTION calcular_salario_anual(salario_mensal IN NUMBER) 
+RETURN NUMBER 
+IS
+    salario_anual NUMBER;
+BEGIN
+    salario_anual := salario_mensal * 13;
+    RETURN salario_anual;
+END;
+--usando a function
+DECLARE
+    salario NUMBER := 3000;
+    salario_total NUMBER;
+BEGIN
+    salario_total := calcular_salario_anual(salario);
+    DBMS_OUTPUT.PUT_LINE('Salário anual: ' || salario_total);
+END;
+
+--%TYPE
+DECLARE
+    v_nome       Funcionario.nome%TYPE;
+    v_salario    Funcionario.salario%TYPE;
+BEGIN
+    SELECT nome, salario 
+    INTO v_nome, v_salario 
+    FROM Funcionario 
+    WHERE cpf_f = '23456789012';
+    
+    DBMS_OUTPUT.PUT_LINE('Nome: ' || v_nome);
+    DBMS_OUTPUT.PUT_LINE('Salário: ' || v_salario);
+END;
+
+--%ROWTYPE
+DECLARE
+    v_fun Funcionario%ROWTYPE;
+BEGIN
+    SELECT * INTO v_fun FROM Funcionario WHERE  cpf_f = '23456789012';
+    
+    DBMS_OUTPUT.PUT_LINE('Nome: ' || v_fun.nome);
+    DBMS_OUTPUT.PUT_LINE('Salário: ' || v_fun.salario);
+END;
