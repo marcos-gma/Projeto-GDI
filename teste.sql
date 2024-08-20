@@ -451,26 +451,27 @@ INSERT INTO Lugar (data_hora, sala) VALUES (TO_DATE('2024-08-10 14:00:00', 'YYYY
 INSERT INTO Lugar (data_hora, sala) VALUES (TO_DATE('2024-08-11 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 102);
 
 -- Inserindo dados na tabela Possui
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('87765432109', 49, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('87765432109', 49, 2);
 INSERT INTO Possui (malfeitor, cela, ala) VALUES ('86654321098', 52, 1);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('85543210987', 51, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('85543210987', 51, 2);
 INSERT INTO Possui (malfeitor, cela, ala) VALUES ('92210987654', 50, 1);
 INSERT INTO Possui (malfeitor, cela, ala) VALUES ('84432109876', 53, 1);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('83321098765', 53, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('83321098765', 53, 2);
 INSERT INTO Possui (malfeitor, cela, ala) VALUES ('82210987654', 53, 1);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('81109876543', 53, 1);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('93321098765', 54, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('81109876543', 53, 2);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('93321098765', 54, 2);
 INSERT INTO Possui (malfeitor, cela, ala) VALUES ('94432109876', 55, 1);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('97765432109', 54, 1);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('97765432109', 54, 2);
 INSERT INTO Possui (malfeitor, cela, ala) VALUES ('98876543210', 56, 1);
 
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('80098765432', 49, 2);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('95543210987', 52, 2);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('80098765432', 49, 1);
 INSERT INTO Possui (malfeitor, cela, ala) VALUES ('79987654321', 52, 2);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('88876543210', 50, 2);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('88876543210', 50, 1);
 INSERT INTO Possui (malfeitor, cela, ala) VALUES ('89987654321', 53, 2);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('90098765432', 53, 2);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('90098765432', 53, 1);
 INSERT INTO Possui (malfeitor, cela, ala) VALUES ('91109876543', 53, 2);
-INSERT INTO Possui (malfeitor, cela, ala) VALUES ('96654321098', 56, 2);
+INSERT INTO Possui (malfeitor, cela, ala) VALUES ('96654321098', 56, 1);
 
 ALTER TABLE Detento
 rename to Presidiario;
@@ -566,16 +567,14 @@ WHERE cpf IN (
     WHERE duracao > ALL (
         SELECT duracao
         FROM Crime
-        WHERE cpf_detento <> Crime.cpf_detento));
+        WHERE cpf_detento <> Crime.cpf_detento)
+);
 
-SELECT * FROM  FUNCIONARIO 
-GROUP BY NOME 
-ORDER BY NOME DESC
 
 SELECT cpf, SUM(salario * 2) AS total_salario_dobrado 
 FROM Funcionario 
 GROUP BY cpf 
-HAVING SUM(salario * 2) < 10000
+HAVING SUM(salario * 2) < 10000;
 
 SELECT cpf, nome, NULL AS data_ent, NULL AS comportamento
 FROM Detento
