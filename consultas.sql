@@ -209,10 +209,82 @@ END;
 
 --%ROWTYPE
 DECLARE
+    -- Declara uma variável para armazenar uma linha da tabela Funcionario
     v_fun Funcionario%ROWTYPE;
 BEGIN
-    SELECT * INTO v_fun FROM Funcionario WHERE  cpf_f = '23456789012';
+    -- Seleciona todos os campos da tabela Funcionario para o CPF fornecido
+    SELECT * INTO v_fun 
+    FROM Funcionario 
+    WHERE cpf = '23456789012';
     
+    -- Exibe as informações do funcionário selecionado
     DBMS_OUTPUT.PUT_LINE('Nome: ' || v_fun.nome);
     DBMS_OUTPUT.PUT_LINE('Salário: ' || v_fun.salario);
+    DBMS_OUTPUT.PUT_LINE('Data de Nascimento: ' || TO_CHAR(v_fun.data_nasc, 'DD/MM/YYYY'));
+    DBMS_OUTPUT.PUT_LINE('Sexo: ' || v_fun.sexo);
+    DBMS_OUTPUT.PUT_LINE('Data de Admissão: ' || TO_CHAR(v_fun.data_admi, 'DD/MM/YYYY'));
+    DBMS_OUTPUT.PUT_LINE('CEP: ' || v_fun.cep);
+EXCEPTION
+    -- Trata o caso em que nenhum registro é encontrado
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Nenhum funcionário encontrado com o CPF informado.');
+    -- Trata outros possíveis erros
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
+
+--IF-ELSE
+CREATE OR REPLACE FUNCTION categoria_salarial(salario IN NUMBER)
+RETURN VARCHAR2
+IS
+    categoria VARCHAR2(20);
+BEGIN
+    IF salario < 2000 THEN
+        categoria := 'Abaixo da média';
+    ELSIF salario BETWEEN 2000 AND 4000 THEN
+        categoria := 'Na média';
+    ELSE
+        categoria := 'Acima da média';
+    END IF;
+    RETURN categoria;
+END;
+DECLARE
+    salario NUMBER := 2500;
+    resultado VARCHAR2(20);
+BEGIN
+    resultado := categoria_salarial(salario);
+    DBMS_OUTPUT.PUT_LINE('Categoria salarial: ' || resultado);
+END;
+
+--CURSOR
+DECLARE
+    CURSOR funcionario_cursor IS
+        SELECT cpf, nome, salario
+        FROM Funcionario;
+    
+    v_funcionario funcionario_cursor%ROWTYPE;
+    v_categoria VARCHAR2(20);
+BEGIN
+    -- Abrir o cursor para ler os dados da tabela Funcionario
+    OPEN funcionario_cursor;
+    
+    -- Loop para processar cada registro do cursor
+    LOOP
+        FETCH funcionario_cursor INTO v_funcionario;
+        EXIT WHEN funcionario_cursor%NOTFOUND;
+        
+        -- Determina a categoria salarial usando a função
+        v_categoria := categoria_salarial(v_funcionario.salario);
+        
+        -- Exibe as informações do funcionário e sua categoria salarial
+        DBMS_OUTPUT.PUT_LINE('CPF: ' || v_funcionario.cpf);
+        DBMS_OUTPUT.PUT_LINE('Nome: ' || v_funcionario.nome);
+        DBMS_OUTPUT.PUT_LINE('Salário: ' || v_funcionario.salario);
+        DBMS_OUTPUT.PUT_LINE('Categoria salarial: ' || v_categoria);
+        DBMS_OUTPUT.PUT_LINE('---------------------------------------');
+    END LOOP;
+    
+    -- Fechar o cursor após o processamento
+    CLOSE funcionario_cursor;
+END;
+
