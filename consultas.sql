@@ -370,3 +370,138 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('CPF: ' || v_cpf);
     DBMS_OUTPUT.PUT_LINE('Comportamento: ' || v_comportamento);
 END;
+
+--EXCEPTION WHEN
+DECLARE
+    v_cpf Detento.cpf%TYPE := '12345678901';
+    v_nome Detento.nome%TYPE := 'João Silva';
+BEGIN
+    -- Tentativa de inserção de um detento
+    INSERT INTO Detento (cpf, nome, sexo, data_nasc, data_ent)
+    VALUES (v_cpf, v_nome, 'M', TO_DATE('1990-01-01', 'YYYY-MM-DD'), SYSDATE);
+
+    DBMS_OUTPUT.PUT_LINE('Detento inserido com sucesso!');
+EXCEPTION
+    WHEN DUP_VAL_ON_INDEX THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: CPF já cadastrado.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro inesperado: ' || SQLERRM);
+END;
+
+--IN, OUT
+CREATE OR REPLACE PROCEDURE obter_dados_detento (
+    p_cpf IN Detento.cpf%TYPE,
+    p_nome OUT Detento.nome%TYPE,
+    p_comportamento OUT Detento.comportamento%TYPE
+)
+IS
+BEGIN
+    SELECT nome, comportamento
+    INTO p_nome, p_comportamento
+    FROM Detento
+    WHERE cpf = p_cpf;
+
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('Nenhum detento encontrado com o CPF: ' || p_cpf);
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Erro inesperado: ' || SQLERRM);
+END;
+
+--PACKAGES
+CREATE OR REPLACE PACKAGE detento_pkg AS
+    PROCEDURE inserir_detento(
+        p_cpf IN Detento.cpf%TYPE,
+        p_nome IN Detento.nome%TYPE,
+        p_sexo IN Detento.sexo%TYPE,
+        p_data_nasc IN Detento.data_nasc%TYPE,
+        p_data_ent IN Detento.data_ent%TYPE
+    );
+
+    FUNCTION obter_nome_detento(p_cpf IN Detento.cpf%TYPE) RETURN Detento.nome%TYPE;
+END detento_pkg;
+
+CREATE OR REPLACE PACKAGE BODY detento_pkg AS
+    PROCEDURE inserir_detento(
+        p_cpf IN Detento.cpf%TYPE,
+        p_nome IN Detento.nome%TYPE,
+        p_sexo IN Detento.sexo%TYPE,
+        p_data_nasc IN Detento.data_nasc%TYPE,
+        p_data_ent IN Detento.data_ent%TYPE
+    ) IS
+    BEGIN
+        INSERT INTO Detento (cpf, nome, sexo, data_nasc, data_ent)
+        VALUES (p_cpf, p_nome, p_sexo, p_data_nasc, p_data_ent);
+
+        DBMS_OUTPUT.PUT_LINE('Detento inserido com sucesso!');
+    EXCEPTION
+        WHEN DUP_VAL_ON_INDEX THEN
+            DBMS_OUTPUT.PUT_LINE('Erro: CPF já cadastrado.');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Erro inesperado: ' || SQLERRM);
+    END inserir_detento;
+
+    FUNCTION obter_nome_detento(p_cpf IN Detento.cpf%TYPE) RETURN Detento.nome%TYPE IS
+        v_nome Detento.nome%TYPE;
+    BEGIN
+        SELECT nome INTO v_nome FROM Detento WHERE cpf = p_cpf;
+        RETURN v_nome;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('Nenhum detento encontrado com o CPF: ' || p_cpf);
+            RETURN NULL;
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Erro inesperado: ' || SQLERRM);
+            RETURN NULL;
+    END obter_nome_detento;
+END detento_pkg;
+
+--TRIGGERS
+CREATE OR REPLACE TRIGGER trg_limite_cela
+BEFORE INSERT ON Possui
+DECLARE
+    v_capacidade NUMBER;
+    v_ocupantes NUMBER;
+    v_cela Possui.cela%TYPE;
+BEGIN
+    -- Cursor para iterar sobre as novas inserções
+    FOR r IN (SELECT cela FROM Possui WHERE ROWID IN (SELECT ROWID FROM Possui WHERE ROWNUM = 1)) LOOP
+        v_cela := r.cela;
+
+        SELECT capacidade INTO v_capacidade 
+        FROM Tipo_Cela 
+        WHERE tipo_cela = (SELECT tipo FROM Cela WHERE id_cela = v_cela);
+
+        SELECT COUNT(*) INTO v_ocupantes 
+        FROM Possui 
+        WHERE cela = v_cela;
+
+        -- Verificar se a capacidade será excedida
+        IF v_ocupantes >= v_capacidade THEN
+            RAISE_APPLICATION_ERROR(-20001, 'A cela ' || v_cela || ' já atingiu sua capacidade máxima.');
+        END IF;
+    END LOOP;
+END trg_limite_cela;
+
+CREATE OR REPLACE TRIGGER trg_limite_cela_linha
+BEFORE INSERT ON Possui
+FOR EACH ROW
+DECLARE
+    v_capacidade NUMBER;
+    v_ocupantes NUMBER;
+BEGIN
+    -- Obter a capacidade da cela
+    SELECT capacidade INTO v_capacidade 
+    FROM Tipo_Cela 
+    WHERE tipo_cela = (SELECT tipo FROM Cela WHERE id_cela = :NEW.cela);
+
+    -- Contar o número de detentos na cela
+    SELECT COUNT(*) INTO v_ocupantes 
+    FROM Possui 
+    WHERE cela = :NEW.cela;
+
+    -- Verificar se a capacidade foi excedida
+    IF v_ocupantes >= v_capacidade THEN
+        RAISE_APPLICATION_ERROR(-20001, 'A cela já atingiu sua capacidade máxima.');
+    END IF;
+END trg_limite_cela_linha;
