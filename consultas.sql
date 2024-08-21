@@ -201,7 +201,7 @@ BEGIN
     SELECT nome, salario 
     INTO v_nome, v_salario 
     FROM Funcionario 
-    WHERE cpf_f = '23456789012';
+    WHERE cpf = '23456789012';
     
     DBMS_OUTPUT.PUT_LINE('Nome: ' || v_nome);
     DBMS_OUTPUT.PUT_LINE('Salário: ' || v_salario);
