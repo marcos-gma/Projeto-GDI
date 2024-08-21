@@ -282,9 +282,91 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE('Salário: ' || v_funcionario.salario);
         DBMS_OUTPUT.PUT_LINE('Categoria salarial: ' || v_categoria);
         DBMS_OUTPUT.PUT_LINE('---------------------------------------');
-    END LOOP;
-    
+    END LOOP;   
     -- Fechar o cursor após o processamento
     CLOSE funcionario_cursor;
 END;
 
+
+--CASE WHEN
+DECLARE
+    v_tipo VARCHAR2(15);
+    v_mensagem VARCHAR2(100);
+BEGIN
+    SELECT tipo INTO v_tipo FROM Cela WHERE id_cela = 49; -- Exemplo com cela de ID 1
+
+    v_mensagem := CASE 
+                    WHEN v_tipo = 'SOLITARIA' THEN 'Cela de isolamento para criminosos que apresentaram comportamento violento, Protocolo X401087@.'
+                    WHEN v_tipo = 'REGULAR' THEN 'Cela regular, Protocolo 99#.'
+                    ELSE 'Tipo de cela desconhecido.'
+                  END;
+
+    DBMS_OUTPUT.PUT_LINE(v_mensagem);
+END;
+
+--LOOP EXIT WHEN
+DECLARE
+    v_comportamento VARCHAR2(35);
+    v_nome Detento.nome%TYPE;
+BEGIN
+    FOR r IN (SELECT nome, comportamento FROM Detento) LOOP
+        IF r.comportamento = 'Bom' THEN
+            v_nome := r.nome;
+            EXIT; -- Sai do loop ao encontrar o primeiro detento com comportamento 'Bom'
+        END IF;
+    END LOOP;
+
+    IF v_nome IS NOT NULL THEN
+        DBMS_OUTPUT.PUT_LINE('presidiario apresentado bom comportamento: ' || v_nome);
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Nenhum detento com comportamento Bom encontrado.');
+    END IF;
+END;
+
+--WHILE LOOP
+DECLARE
+    v_avg_salary NUMBER;
+    v_increment NUMBER := 100; -- Valor do incremento do salário
+BEGIN
+    -- Calcula o salário médio inicial
+    SELECT AVG(salario) INTO v_avg_salary FROM Funcionario;
+
+    -- Enquanto o salário médio for menor que 3000, continue incrementando
+    WHILE v_avg_salary < 3000 LOOP
+        -- Incrementa os salários
+        IF (v_avg_salary < 1800) THEN
+            UPDATE Funcionario
+            SET salario = salario + v_increment;
+            
+            -- Recalcula o salário médio
+            SELECT AVG(salario) INTO v_avg_salary FROM Funcionario;
+            DBMS_OUTPUT.PUT_LINE('Novo salário médio: ' || v_avg_salary);
+		ELSE 
+            v_avg_salary := 3000;
+		END IF;
+    END LOOP;
+END;
+
+--FOR LOOP
+DECLARE 
+BEGIN
+    FOR r IN (SELECT crime, cpf_detento FROM Sentenca) LOOP
+        DBMS_OUTPUT.PUT_LINE('Crime: ' || r.crime || ' | CPF Detento: ' || r.cpf_detento);
+    END LOOP;
+END;
+
+--SELECT INTO
+DECLARE
+    v_nome Detento.nome%TYPE;
+    v_cpf Detento.cpf%TYPE;
+    v_comportamento Detento.comportamento%TYPE;
+BEGIN
+    SELECT nome, cpf, comportamento 
+    INTO v_nome, v_cpf, v_comportamento
+    FROM Detento
+    WHERE ROWNUM = 1;
+
+    DBMS_OUTPUT.PUT_LINE('Nome: ' || v_nome);
+    DBMS_OUTPUT.PUT_LINE('CPF: ' || v_cpf);
+    DBMS_OUTPUT.PUT_LINE('Comportamento: ' || v_comportamento);
+END;
