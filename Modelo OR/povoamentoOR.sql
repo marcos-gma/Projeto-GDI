@@ -1,25 +1,28 @@
 -- Povoamento da tabela de ENDEREÇOS
-INSERT INTO TB_ENDERECO (CEP, RUA, NUMERO, CIDADE, ESTADO) VALUES 
-('01001-000', 'Praça da Sé', 1, 'São Paulo', 'SP'),
-('20271-130', 'Rua São Francisco Xavier', 524, 'Rio de Janeiro', 'RJ'),
-('30140-130', 'Avenida do Contorno', 8100, 'Belo Horizonte', 'MG'),
-('40026-010', 'Rua Chile', 22, 'Salvador', 'BA'),
-('69050-010', 'Avenida Eduardo Ribeiro', 520, 'Manaus', 'AM'),
-('80010-020', 'Rua XV de Novembro', 140, 'Curitiba', 'PR'),
-('77015-570', '104 Sul', 8, 'Palmas', 'TO'),
-('64000-000', 'Avenida Frei Serafim', 1200, 'Teresina', 'PI'),
-('57035-180', 'Avenida Fernandes Lima', 3500, 'Maceió', 'AL'),
-('66015-050', 'Avenida Presidente Vargas', 500, 'Belém', 'PA'),
-('58038-000', 'Avenida Epitácio Pessoa', 2040, 'João Pessoa', 'PB'),
-('69900-000', 'Avenida Ceará', 950, 'Rio Branco', 'AC'),
-('76801-000', 'Rua Duque de Caxias', 40, 'Porto Velho', 'RO'),
-('69010-000', 'Avenida Getúlio Vargas', 300, 'Manaus', 'AM'),
-('57010-000', 'Rua do Comércio', 145, 'Maceió', 'AL'),
-('50010-010', 'Rua do Imperador', 550, 'Recife', 'PE'),
-('35500-000', 'Avenida 1º de Junho', 999, 'Divinópolis', 'MG'),
-('58013-000', 'Avenida Almirante Barroso', 300, 'João Pessoa', 'PB'),
-('69020-080', 'Rua Joaquim Nabuco', 430, 'Manaus', 'AM'),
-('69908-210', 'Rua Benjamin Constant', 1600, 'Rio Branco', 'AC');
+
+INSERT INTO TB_ENDERECO VALUES ('12345678', 'Rua Quarenta e Oito', '122', 'Espinheiro', TELEFONES_VARRAY('123456789', '987654321', '555555555'));
+INSERT INTO TB_ENDERECO VALUES ('12749382', 'Rua das Flores', '512', 'Boa Viagem', TELEFONES_VARRAY('754207534', '258694246', '755470788'));
+INSERT INTO TB_ENDERECO VALUES ('59305820', 'Rua da Aurora', '57', 'Santo Amaro', TELEFONES_VARRAY('407959619', '212315837', '345097186'));
+INSERT INTO TB_ENDERECO VALUES ('12850285', 'Rua do Sol', '23', 'Recife Antigo', TELEFONES_VARRAY('399878968', '099282403', '785303902'));
+INSERT INTO TB_ENDERECO VALUES ('60492049', 'Avenida Boa Viagem', '11', 'Boa Viagem', TELEFONES_VARRAY('936763402', '591308880', '853745982'));
+INSERT INTO TB_ENDERECO VALUES ('39568403', 'Rua Amélia', '66', 'Graças', TELEFONES_VARRAY('457545855', '777582630', '222401419'));
+INSERT INTO TB_ENDERECO VALUES ('68439049', 'Rua Benfica', '75', 'Madalena', TELEFONES_VARRAY('587999975', '931028020', '704590548'));
+INSERT INTO TB_ENDERECO VALUES ('57394592', 'Rua do Brum', '124', 'Recife Antigo', TELEFONES_VARRAY('362785516', '231919931', '181602434'));
+INSERT INTO TB_ENDERECO VALUES ('46593920', 'Rua da Harmonia', '314', 'Casa Amarela', TELEFONES_VARRAY('047290293', '048853682', '962478678'));
+INSERT INTO TB_ENDERECO VALUES ('84028349', 'Rua das Palmeiras', '245', 'Parnamirim', TELEFONES_VARRAY('390314729', '103133965', '851956102'));
+INSERT INTO TB_ENDERECO VALUES ('53235142', 'Rua Sete de Setembro', '21', 'Santo Antônio', TELEFONES_VARRAY('528729093', '758528992', '437077965'));
+INSERT INTO TB_ENDERECO VALUES ('74394759', 'Rua Nova Descoberta', '88', 'Nova Descoberta', TELEFONES_VARRAY('826715310', '236423648', '527770952'));
+INSERT INTO TB_ENDERECO VALUES ('53233213', 'Rua Dom Bosco', '93', 'Boa Vista', TELEFONES_VARRAY('241084589', '528218969', '665897545'));
+INSERT INTO TB_ENDERECO VALUES ('49239291', 'Rua Gervásio Pires', '25', 'Boa Vista', TELEFONES_VARRAY('554300794', '054622895', '479426246'));
+INSERT INTO TB_ENDERECO VALUES ('57938329', 'Rua José Bonifácio', '35', 'Torre', TELEFONES_VARRAY('390309122', '605269948', '158207822'));
+INSERT INTO TB_ENDERECO VALUES ('87654321', 'Rua Carneiro Vilela', '56', 'Espinheiro', TELEFONES_VARRAY('065581855', '368738182', '953967299'));
+INSERT INTO TB_ENDERECO VALUES ('41723940', 'Rua Barão de Souza Leão', '77', 'Imbiribeira', TELEFONES_VARRAY('335416706', '847543972', '083305686'));
+INSERT INTO TB_ENDERECO VALUES ('12030412', 'Avenida Conselheiro Rosa e Silva', '1', 'Aflitos', TELEFONES_VARRAY('129683332', '389491984', '205941461'));
+INSERT INTO TB_ENDERECO VALUES ('57333330', 'Rua da Moeda', '3', 'Recife Antigo', TELEFONES_VARRAY('178805279', '554067264', '808964693'));
+INSERT INTO TB_ENDERECO VALUES ('21453455', 'Rua Real da Torre', '5', 'Madalena', TELEFONES_VARRAY('277614144', '162272141', '011926124'));
+INSERT INTO TB_ENDERECO VALUES ('34813308', 'Avenida Dezessete de Agosto', '89', 'Casa Forte', TELEFONES_VARRAY('277614144', '162272141', '011926124'));
+
+
 
 -- Povoamento da tabela de FUNCIONÁRIOS
 INSERT INTO TB_FUNCIONARIOS (CPF, NOME, DATA_NASC, SEXO, ENDERECO) VALUES 
