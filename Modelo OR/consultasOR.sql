@@ -9,7 +9,7 @@ FROM TB_POSSUI P;
 
 -- Acessando os elementos do VARRAY
 SELECT C.TIPO, t.COLUMN_VALUE AS CELAS
-FROM TB_CELAS C,
+FROM TB_CELA C,
      TABLE(C.CELAS) t;
 
 
