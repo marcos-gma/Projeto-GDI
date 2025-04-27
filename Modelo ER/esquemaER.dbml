@@ -1,90 +1,87 @@
 // define o esquema do banco de dados usando DBML (Database Markup Language).
+// https://dbdiagram.io/d/EsquemaER-Sistema-Penitenciario-67d0580e75d75cc844af26a2
+
+// Diagrama ER: https://app.diagrams.net/#G1b34ipavSY7zlRhj_ECRHJeXXYKVwv62S#%7B%22pageId%22%3A%22C5RBs43oDa-KdzZeNtuy%22%7D
 
 Table Detento {
-    cpf varchar(11) [primary key]
+    cpf varchar(11) [primary key, not null]
     comportamento varchar(30)
-    data_ent date
-    sexo char(1)
-    data_nasc date
-    nome varchar(30)
+    data_ent date [not null]
+    data_saida date
+    sexo char(1) [not null, note: "CHECK (sexo IN ('F', 'M'))"]
+    data_nasc date [not null]
+    nome varchar(30) [not null]
 }
 
 Table Sentenca {
-    crime varchar(30)
-    cpf_detento varchar(11)
+    crime varchar(30) [not null]
+    cpf_detento varchar(11) [not null]
+    duracao integer [not null]
     primary key (crime, cpf_detento)
 }
 
-Table Crime {
-    id_crime integer [primary key]
-    crime varchar(30)
-    cpf_detento varchar(11)
-    duracao integer
-}
-
 Table Visitante {
-    nome varchar(30)
-    sexo char(1)
-    data_nasc date
-    malfeitor varchar(11)
+    nome varchar(30) [not null]
+    sexo char(1) [not null, note: "CHECK (sexo IN ('F', 'M'))"]
+    data_nasc date [not null]
+    malfeitor varchar(11) [not null]
     primary key (nome, malfeitor)
 }
 
 Table Tipo_Cela {
     tipo_cela varchar(30) [primary key]
-    capacidade integer
+    capacidade integer [not null, note: "CHECK (capacidade BETWEEN 1 AND 10)"]
 }
 
 Table Cela {
     id_cela integer [primary key]
-    tipo varchar(15)
+    tipo varchar(15) [not null, note: "CHECK (tipo IN ('SOLITARIA', 'REGULAR'))"]
 }
 
 Table Endereco {
     cep varchar(10) [primary key]
-    rua varchar(30)
-    numero integer
-    bairro varchar(30)
+    rua varchar(30) [not null]
+    numero integer [not null]
+    bairro varchar(30) [not null]
 }
 
 Table Funcionario {
     cpf varchar(11) [primary key]
-    nome varchar(30)
-    data_nasc date
-    sexo char(1)
-    salario integer
-    data_admi date
-    cep varchar(10)
+    nome varchar(30) [not null]
+    data_nasc date [not null]
+    sexo char(1) [not null, note: "CHECK (sexo IN ('F', 'M'))"]
+    salario integer [not null]
+    data_admi date [not null]
+    cep varchar(10) [not null]
 }
 
 Table Diretor {
-    cpf_f varchar(11)
-    codigo integer [primary key]
-    data_inicio date
+    cpf_f varchar(11) [unique, not null]
+    data_inicio date [not null]
 }
 
 Table Superintendente {
     cpf_f varchar(11) [primary key]
-    bonificacao integer
-    diretor integer
+    bonificacao integer [not null]
+    diretor integer [not null]
 }
 
 Table Ala {
     id integer [primary key]
-    tipo char(1)
-    nivel_seg varchar(15)
-    autoridade varchar(11)
+    tipo char(1) [not null, note: "CHECK (tipo IN ('F', 'M'))"]
+    nivel_seg varchar(15) [not null, note: "CHECK (nivel_seg IN ('MAXIMA', 'MEDIA', 'PADRAO'))"]
+    autoridade varchar(11) [unique, not null]
 }
 
 Table Telefone {
     id integer [primary key]
-    telefone varchar(15)
-    funcionario varchar(11)
+    telefone varchar(15) [unique, not null]
+    funcionario varchar(11) [not null]
 }
 
 Table Guarda {
     cpf_f varchar(11) [primary key]
-    turno varchar(11)
+    turno varchar(11) [not null, note: "CHECK (turno IN ('NOTURNO', 'MATUTINO', 'VESPERTINO'))"]
     supervisionado varchar(11)
 }
 
@@ -93,44 +90,38 @@ Table Sala_visita {
 }
 
 Table Visita {
-    motivo varchar(30)
+    motivo varchar(30) [not null, note: "CHECK (motivo IN ('Amigo(a)', 'Parente', 'Conjuge', 'Outro(a)'))"]
     malfeitor varchar(11) [primary key]
-    data_hora date
-}
-
-Table Entrada {
-    visitante varchar(30)
-    data_hora date
-    malfeitor varchar(11)
-    primary key (visitante, data_hora)
-}
-
-Table Lugar {
-    data_hora date [primary key]
-    sala integer
+    data_hora date [not null]
+    visitante varchar(30) [not null]
+    sala_visita integer [not null]
 }
 
 Table Possui {
     malfeitor varchar(11) [primary key]
-    cela integer
-    ala integer
+    cela integer [not null]
+    ala integer [not null]
 }
 
 Ref: Sentenca.cpf_detento > Detento.cpf
-Ref: Crime.cpf_detento > Detento.cpf
 Ref: Visitante.malfeitor > Detento.cpf
 Ref: Cela.tipo > Tipo_Cela.tipo_cela
 Ref: Funcionario.cep > Endereco.cep
 Ref: Diretor.cpf_f > Funcionario.cpf
 Ref: Superintendente.cpf_f > Funcionario.cpf
-Ref: Superintendente.diretor > Diretor.codigo
 Ref: Ala.autoridade > Superintendente.cpf_f
 Ref: Telefone.funcionario > Funcionario.cpf
-Ref: Guarda.supervisionado > Detento.cpf
+Ref: Guarda.supervisionado > Guarda.cpf_f
+Ref: Guarda.cpf_f > Funcionario.cpf
+Ref: Visita.malfeitor > Detento.cpf
+Ref: Visita.sala_visita > Sala_visita.id
+Ref: Visita.visitante > Visitante.nome
 Ref: Visita.malfeitor > Visitante.malfeitor
-Ref: Entrada.visitante > Visitante.nome
-Ref: Entrada.malfeitor > Visitante.malfeitor
-Ref: Lugar.sala > Sala_visita.id
 Ref: Possui.malfeitor > Detento.cpf
 Ref: Possui.cela > Cela.id_cela
 Ref: Possui.ala > Ala.id
+Ref: Superintendente.diretor > Diretor.cpf_f
+
+
+
+Ref: "Funcionario"."cpf" < "Visita"."sala_visita"

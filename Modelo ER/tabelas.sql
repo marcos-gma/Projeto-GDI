@@ -2,162 +2,197 @@
 CREATE TABLE Detento (
     cpf VARCHAR2(11) PRIMARY KEY,
     comportamento VARCHAR2(30),
-    data_ent DATE,
-    sexo char(1),
-    data_nasc DATE,
-    nome VARCHAR2(30),
-    CHECK (sexo IN ('F', 'M'))--Adição checagem ENUM
+    data_ent DATE NOT NULL,
+    data_saida DATE, -- data de saída será definida por um trigger
+    sexo CHAR(1) NOT NULL,
+    data_nasc DATE NOT NULL,
+    nome VARCHAR2(30) NOT NULL,
+    CHECK (sexo IN ('F', 'M')) -- checa se o valor inserido na coluna sexo é 'F' ou 'M' (tem que ser um dos dois) 
 );
+
 
 -- Criação da tabela Sentença
 CREATE TABLE Sentenca (
-    crime VARCHAR2(30),
-    cpf_detento VARCHAR2(11),
+    crime VARCHAR2(30) NOT NULL,
+    cpf_detento VARCHAR2(11) NOT NULL,
+    duracao NUMBER NOT NULL, -- atulizar automaticamente quando adicionar uma nova sentença ao mesmo cpf
     PRIMARY KEY (crime, cpf_detento),
-    CONSTRAINT fk_malfeitor FOREIGN KEY (cpf_detento) REFERENCES Detento(cpf)
+    CONSTRAINT fk_malfeitor FOREIGN KEY (cpf_detento) REFERENCES Detento(cpf) -- constraint é uma restrição que impede a inserção de valores inválidos em uma coluna -> nesse caso, a coluna cpf_detento da tabela Sentenca só pode receber valores que existem na coluna cpf da tabela Detento
 );
 
--- Criação da tabela Crime
-CREATE TABLE Crime (
-	id_crime NUMBER PRIMARY KEY,
-    crime VARCHAR2(30),
-	cpf_detento VARCHAR2(11),
-    duracao NUMBER,
-    CONSTRAINT fk_crime FOREIGN KEY (crime, cpf_detento) REFERENCES Sentenca(crime, cpf_detento),
-    CHECK (duracao BETWEEN 1 AND 30)--Adição checagem INTERVALO
-);
-
--- Criação da tabela Visitante
+-- Criação da tabela Visitante -> entidade fraca pq depende de malfeitor (detento visitado) para existir
 CREATE TABLE Visitante (
-    nome VARCHAR2(30),
-    sexo CHAR(1),
-    data_nasc DATE,
-    malfeitor VARCHAR2(11),
+    nome VARCHAR2(30) NOT NULL,
+    sexo CHAR(1) NOT NULL,
+    data_nasc DATE NOT NULL,
+    malfeitor VARCHAR2(11) NOT NULL, -- detento visitado
     PRIMARY KEY (nome, malfeitor),
     CONSTRAINT fk_malfeitor_visitante FOREIGN KEY (malfeitor) REFERENCES Detento(cpf),
-    CHECK (sexo IN ('F', 'M'))--Adição checagem ENUM
+    CHECK (sexo IN ('F', 'M'))
 );
 
 -- Criação da tabela Tipo_Cela
 CREATE TABLE Tipo_Cela (
     tipo_cela VARCHAR2(30) PRIMARY KEY,
-    capacidade NUMBER,
-    CHECK (capacidade BETWEEN 1 AND 10) --Adição checagem INTERVALO
+    capacidade NUMBER NOT NULL,
+    CHECK (capacidade BETWEEN 1 AND 10) -- checa se a capacidade da cela está entre 1 e 10 (máximo)
 );
 
 -- Criação da tabela Cela
 CREATE TABLE Cela (
     id_cela NUMBER PRIMARY KEY,
-    tipo VARCHAR2(15), --Mudança SIZEType
+    tipo VARCHAR2(15) NOT NULL, 
     CONSTRAINT fk_tipo FOREIGN KEY (tipo) REFERENCES Tipo_Cela(tipo_cela),
-    CHECK (tipo IN ('SOLITARIA', 'REGULAR')) --Adição checagem ENUM
+    CHECK (tipo IN ('SOLITARIA', 'REGULAR')) -- checa se o tipo da cela é 'SOLITARIA' ou 'REGULAR'
 );
 
--- Criação da tabela Endereço
+-- Criação da tabela Endereço -> atributo composto
 CREATE TABLE Endereco (
     cep VARCHAR2(10) PRIMARY KEY,
-    rua VARCHAR2(30),
-    numero NUMBER,
-    bairro VARCHAR2(30)
+    rua VARCHAR2(30) NOT NULL,
+    numero NUMBER NOT NULL,
+    bairro VARCHAR2(30) NOT NULL
 );
 
 -- Criação da tabela Funcionário
 CREATE TABLE Funcionario (
     cpf VARCHAR2(11) PRIMARY KEY,
-    nome VARCHAR2(30),
-    data_nasc DATE,
-    sexo CHAR(1),
-    salario NUMBER,
-    data_admi DATE,
-    cep VARCHAR2(10),
+    nome VARCHAR2(30) NOT NULL,
+    data_nasc DATE NOT NULL,
+    sexo CHAR(1) NOT NULL,
+    salario NUMBER NOT NULL,
+    data_admi DATE NOT NULL,
+    cep VARCHAR2(10) NOT NULL,
     CONSTRAINT fk_endereco FOREIGN KEY (cep) REFERENCES Endereco(cep),
-    CHECK (sexo IN ('F', 'M')) --Adição checagem ENUM
+    CHECK (sexo IN ('F', 'M')) 
 );
 
 -- Criação da tabela Diretor
 CREATE TABLE Diretor (
-    cpf_f VARCHAR2(11),
+    cpf_f VARCHAR2(11) NOT NULL UNIQUE, 
     codigo NUMBER PRIMARY KEY,
-    data_inicio DATE,	-- Diretor especialização de funcionario
-    CONSTRAINT unico_diretor FOREIGN KEY (cpf_f) REFERENCES Funcionario (cpf)
+    data_inicio DATE NOT NULL,	
+    CONSTRAINT unico_diretor FOREIGN KEY (cpf_f) REFERENCES Funcionario (cpf) -- especialização de funcionário
 );
 
 -- Criação da tabela Superintendente
 CREATE TABLE Superintendente (
-    cpf_f VARCHAR2(11)  PRIMARY KEY,
-    bonificacao NUMBER,
-    diretor NUMBER,
-    CONSTRAINT fk_funcionario FOREIGN KEY (cpf_f) REFERENCES Funcionario(cpf),
-    CONSTRAINT fk_diretor FOREIGN KEY (diretor) REFERENCES Diretor(codigo)
+    cpf_f VARCHAR2(11) PRIMARY KEY,
+    bonificacao NUMBER NOT NULL,
+    diretor NUMBER NOT NULL,
+    CONSTRAINT fk_funcionario FOREIGN KEY (cpf_f) REFERENCES Funcionario(cpf), -- especialização de funcionário
+    CONSTRAINT fk_diretor FOREIGN KEY (diretor) REFERENCES Diretor(codigo) -- diretor que coordena o superintendente
 );
 
 -- Criação da tabela Ala
 CREATE TABLE Ala (
     id NUMBER PRIMARY KEY,
-    tipo CHAR(1), --Mudança type
-    nivel_seg VARCHAR2(15), --Mudança type
-    autoridade VARCHAR2(11),
-    CONSTRAINT fk_superintendente FOREIGN KEY (autoridade) REFERENCES Superintendente(cpf_f),
-    CHECK (tipo IN ('F', 'M')), --Adição checagem ENUM
-    CHECK (nivel_seg IN ('MAXIMA', 'MEDIA', 'PADRAO')) --Adição checagem ENUM
+    tipo CHAR(1) NOT NULL, 
+    nivel_seg VARCHAR2(15) NOT NULL, 
+    autoridade VARCHAR2(11) NOT NULL UNIQUE,
+    CONSTRAINT fk_superintendente FOREIGN KEY (autoridade) REFERENCES Superintendente(cpf_f), -- superintendente responsável pela ala (administra)
+    CHECK (tipo IN ('F', 'M')),
+    CHECK (nivel_seg IN ('MAXIMA', 'MEDIA', 'PADRAO')) -- checa se o nível de segurança da ala é 'MAXIMA', 'MEDIA' ou 'PADRAO'
 );
 
--- Criação da tabela Telefone
+-- Criação da tabela Telefone -> atributo multivalorado
 CREATE TABLE Telefone (
     id NUMBER PRIMARY KEY,
-    telefone VARCHAR2(15),
-    funcionario VARCHAR2(11),
-    CONSTRAINT fk_funcionario_telefone FOREIGN KEY (funcionario) REFERENCES Funcionario(cpf) -- qualquer valor inserido na coluna funcionario da tabela atual deve existir na coluna cpf da tabela Funcionario 
+    telefone VARCHAR2(15) NOT NULL UNIQUE,
+    funcionario VARCHAR2(11) NOT NULL,
+    CONSTRAINT fk_funcionario_telefone FOREIGN KEY (funcionario) REFERENCES Funcionario(cpf) -- telefone de funcionário
 );
-
 
 -- Criação da tabela Guarda
 CREATE TABLE Guarda (
     cpf_f VARCHAR2(11) PRIMARY KEY,
-    turno VARCHAR2(11),
+    turno VARCHAR2(11) NOT NULL,
     supervisionado VARCHAR2(11),
-    CONSTRAINT fk_supervisionado FOREIGN KEY (supervisionado) REFERENCES Detento(cpf),
-    CHECK (turno IN ('NOTURNO', 'MATUTINO', 'VESPERTINO')) --Adição checagem ENUM
+    CONSTRAINT fk_funcionario_guarda FOREIGN KEY (cpf_f) REFERENCES Funcionario(cpf), -- especialização de funcionário
+    CONSTRAINT fk_supervisionado FOREIGN KEY (supervisionado) REFERENCES Guarda(cpf_f), -- guarda que supervisiona outro guarda
+    CHECK (turno IN ('NOTURNO', 'MATUTINO', 'VESPERTINO')) -- checagem ENUM
 );
-
 
 -- Criação da tabela Sala_visita
 CREATE TABLE Sala_visita (
     id NUMBER PRIMARY KEY
 );
 
--- Criação da tabela Visita
+-- Criação da tabela Visita -> relacionamento que virou entidade
 CREATE TABLE Visita (
-    motivo VARCHAR2(30),
+    motivo VARCHAR2(30) NOT NULL,
     malfeitor VARCHAR2(11) PRIMARY KEY,
-    data_hora DATE,
-    CONSTRAINT fk_malfeitor_visita FOREIGN KEY (malfeitor) REFERENCES Detento(cpf),
-    CHECK (motivo IN ('Amigo(a)', 'Parente', 'Conjuge', 'Companheiro(a)')) --Adição checagem ENUM
+    data_hora DATE NOT NULL,
+    visitante VARCHAR2(30) NOT NULL,
+    sala_visita NUMBER NOT NULL,
+    CONSTRAINT fk_sala_visita FOREIGN KEY (sala_visita) REFERENCES Sala_visita(id), -- sala de visita usada
+    CONSTRAINT fk_visitante FOREIGN KEY (visitante, malfeitor) REFERENCES Visitante(nome, malfeitor), -- visitante que visita
+    CONSTRAINT fk_malfeitor_visita FOREIGN KEY (malfeitor) REFERENCES Detento(cpf), -- detento visitado
+    CHECK (motivo IN ('Amigo(a)', 'Parente', 'Conjuge', 'Outro(a)'))
 );
 
--- Criação da tabela Entrada
-CREATE TABLE Entrada ( --Atualização retirar atributo nome.
-    visitante VARCHAR2(30),
-    data_hora DATE,
-    malfeitor VARCHAR2(11),
-    PRIMARY KEY (visitante, data_hora),
-    CONSTRAINT fk_visitante_entrada FOREIGN KEY (visitante, malfeitor) REFERENCES Visitante(nome, malfeitor)
-);
-
--- Criação da tabela Local
-CREATE TABLE Lugar (
-    data_hora DATE PRIMARY KEY,
-    sala NUMBER,
-    CONSTRAINT fk_sala FOREIGN KEY (sala) REFERENCES Sala_visita(id),
-    CHECK (sala BETWEEN 100 AND 208) --Adição checagem INTERVALO
-);
-
--- Criação da tabela Possui
+-- Criação da tabela Possui -> relacionamento triplo
 CREATE TABLE Possui (
     malfeitor VARCHAR2(11) PRIMARY KEY,
-    cela NUMBER,
-    ala NUMBER,
-    CONSTRAINT fk_malfeitor_possui FOREIGN KEY (malfeitor) REFERENCES Detento(cpf),
-    CONSTRAINT fk_cela FOREIGN KEY (cela) REFERENCES Cela(id_cela),
-    CONSTRAINT fk_ala FOREIGN KEY (ala) REFERENCES Ala(id)
+    cela NUMBER NOT NULL,
+    ala NUMBER NOT NULL,
+    CONSTRAINT fk_malfeitor_possui FOREIGN KEY (malfeitor) REFERENCES Detento(cpf), -- detento que possui ala e cela
+    CONSTRAINT fk_cela FOREIGN KEY (cela) REFERENCES Cela(id_cela), -- cela que o detento pertence e está em uma ala
+    CONSTRAINT fk_ala FOREIGN KEY (ala) REFERENCES Ala(id) -- ala que o detento pertence e que contém a cela
 );
+
+
+-- DROP DAS TABELAS ACIMA
+DROP TABLE Possui CASCADE CONSTRAINTS;
+DROP TABLE Visita CASCADE CONSTRAINTS;
+DROP TABLE Sala_visita CASCADE CONSTRAINTS;
+DROP TABLE Guarda CASCADE CONSTRAINTS;
+DROP TABLE Telefone CASCADE CONSTRAINTS;
+DROP TABLE Ala CASCADE CONSTRAINTS;
+DROP TABLE Superintendente CASCADE CONSTRAINTS;
+DROP TABLE Diretor CASCADE CONSTRAINTS;
+DROP TABLE Funcionario CASCADE CONSTRAINTS;
+DROP TABLE Endereco CASCADE CONSTRAINTS;
+DROP TABLE Cela CASCADE CONSTRAINTS;
+DROP TABLE Tipo_Cela CASCADE CONSTRAINTS;
+DROP TABLE Visitante CASCADE CONSTRAINTS;
+DROP TABLE Sentenca CASCADE CONSTRAINTS;
+DROP TABLE Detento CASCADE CONSTRAINTS;
+
+
+-- limpar os dados das tabelas e manter as tabelas
+DELETE FROM Sentenca;
+DELETE FROM Visitante;
+DELETE FROM Possui;
+DELETE FROM Visita;
+DELETE FROM Guarda;
+DELETE FROM Superintendente;
+DELETE FROM Diretor;
+DELETE FROM Funcionario;
+DELETE FROM Ala;
+DELETE FROM Cela;
+DELETE FROM Tipo_Cela;
+DELETE FROM Sala_visita;
+DELETE FROM Telefone;
+DELETE FROM Endereco;
+DELETE FROM Detento;
+
+COMMIT; -- Confirma a exclusão dos dados
+
+
+-- selects das tabelas
+select * from ala;
+select * from cela;
+select * from detento;
+select * from diretor;
+select * from endereco;
+select * from funcionario;
+select * from guarda;
+select * from possui;
+select * from sala_visita;
+select * from setenca;
+select * from superintendente;
+select * from telefone;
+select * from tipo_cela;
+select * from visita;
+select * from visitante;
